@@ -1,0 +1,56 @@
+import java.util.*;
+
+
+public class Main {
+
+    static void nextCalc(int[] next, char[] pattern) {
+        int k = 0;
+        int idx = 1;
+        next[0] = 0;
+        while (idx < pattern.length) {
+            if (pattern[idx] == pattern[k]) {
+                next[idx] = k + 1;
+                idx++;
+                k++;
+            }
+            else if (k == 0) {
+                next[idx] = 0;
+                idx++;
+            }
+            else {
+                k = next[k-1];
+            }
+        }
+    }
+    public static void main(String[] args){
+        String text = "ABABDABACDABABCABAB";
+        String pattern = "ABABCABAB";
+        char[] arr1 = text.toCharArray();
+        char[] arr2 = pattern.toCharArray();
+        int[] next = new int[pattern.length()];
+
+        nextCalc(next, arr2);
+
+        int textIdx = 0, patternIdx = 0;
+        while (textIdx < text.length()) {
+            if (arr1[textIdx] == arr2[patternIdx]) {
+                textIdx++;
+                patternIdx++;
+            }
+            else {
+                if (patternIdx != 0) {
+                    patternIdx = next[patternIdx-1];
+                }
+                else {
+                    textIdx++;
+                }
+            }
+
+            if (patternIdx == pattern.length()) {
+                System.out.println(textIdx - patternIdx);
+                patternIdx = next[patternIdx-1];
+            }
+        }
+
+    }
+}
